@@ -2,7 +2,8 @@ package com.example.bankingapp.service.implement;
 
 import com.example.bankingapp.dto.request.AccountRequest;
 import com.example.bankingapp.dto.response.AccountResponse;
-import com.example.bankingapp.model.Account;
+import com.example.bankingapp.exception.DuplicateAccountException;
+import com.example.bankingapp.domain.model.Account;
 import com.example.bankingapp.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,12 @@ public class AccountServiceImplement implements AccountService {
         if (!accountRepository.existsById(id)){
             throw new AccountNotFoundException("Account not found of id " + id);
         }
+        accountRepository.deleteById(id);
     }
+/*
+Logic for crud operations
+ */
+
 
     @Override
     @Transactional // ensure db operations atomic
@@ -94,6 +100,10 @@ public class AccountServiceImplement implements AccountService {
         Account updatedAccount = accountRepository.save(account);
         return AccountResponse.fromEntity(updatedAccount);
     }
+/*
+transaction handle
+ */
+
 
     // med to reduce code duplication
     private Account findAccountOrThrow(Long id){
@@ -101,3 +111,7 @@ public class AccountServiceImplement implements AccountService {
                 .orElseThrow(() -> new AccountNotFoundException("Account not found of id " + id));
     }
 }
+
+/*
+throw exceptions when rules are violated
+ */

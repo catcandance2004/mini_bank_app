@@ -1,11 +1,14 @@
 package com.example.bankingapp.dto.response;
 
-import com.example.bankingapp.model.Account;
+import com.example.bankingapp.domain.model.Account;
+
 import lombok.Builder;
 import lombok.Data;
 
+
 @Data
 @Builder
+
 public class AccountResponse {
     private Long id;
     private String name;
